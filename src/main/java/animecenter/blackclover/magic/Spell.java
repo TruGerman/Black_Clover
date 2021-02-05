@@ -12,17 +12,18 @@ public class Spell
 	protected boolean isExplosive = false;
 	protected boolean isGeneric = false;
 	protected int radius = 0;
-	private int requiredLevel = 0;
+	protected int requiredLevel = 0;
 	//fucking genius level shit right there
 	protected int id;
 	public static final ArrayList<Spell> ALL_SPELLS = new ArrayList<>();
+	/**Maps the spell id to the actual spell*/
 	protected static final HashMap<Integer, Spell> spellMap = new HashMap<>(); 
 	public static final Spell FIREBALL = new Spell("FIREBALL", MagicType.FIRE, 1).setBaseDamage(2).setBaseManaCost(100).setRequiredLevel(5);
 	public static final Spell FROSTSHARD = new Spell("FROSTSHARD", MagicType.ICE, 2).setBaseDamage(2).setBaseManaCost(100).setRequiredLevel(5);
 	public static final Spell PUSH = new Spell("PUSH", MagicType.NONE, 3).setBaseDamage(0).setBaseManaCost(10).setGeneric();
-	public static final Spell Fire_test = new Spell("Fire_test", MagicType.FIRE, 1).setBaseDamage(2).setBaseManaCost(100).setRequiredLevel(5);
-	public static final Spell Fire_test2 = new Spell("Fire_test2", MagicType.FIRE, 1).setBaseDamage(2).setBaseManaCost(100).setRequiredLevel(5);
-	public static final Spell Fire_test3 = new Spell("Fire_test3", MagicType.FIRE, 1).setBaseDamage(2).setBaseManaCost(100).setRequiredLevel(25);
+	public static final Spell Fire_test = new Spell("Fire_test", MagicType.FIRE, 4).setBaseDamage(2).setBaseManaCost(100).setRequiredLevel(5);
+	public static final Spell Fire_test2 = new Spell("Fire_test2", MagicType.FIRE, 5).setBaseDamage(2).setBaseManaCost(100).setRequiredLevel(5);
+	public static final Spell Fire_test3 = new Spell("Fire_test3", MagicType.FIRE, 6).setBaseDamage(2).setBaseManaCost(100).setRequiredLevel(25);
 	
 	public Spell(String name, MagicType type, int id)
 	{

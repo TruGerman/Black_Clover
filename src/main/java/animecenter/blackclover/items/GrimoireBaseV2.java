@@ -3,11 +3,13 @@ package animecenter.blackclover.items;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import animecenter.blackclover.BlackClover;
 import animecenter.blackclover.magic.GrimoireType;
 import animecenter.blackclover.magic.MagicType;
 import animecenter.blackclover.magic.Spell;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -27,6 +29,7 @@ public abstract class GrimoireBaseV2 extends ItemBase
 	public GrimoireBaseV2(String name, CreativeTabs tab, MagicType type) 
 	{
 		super(name, tab);
+		setMaxStackSize(1);
 		this.magicType = type;
 		
 	}
@@ -45,7 +48,7 @@ public abstract class GrimoireBaseV2 extends ItemBase
 			}
 			
 			NBTTagCompound tagI = stack.getTagCompound();
-			
+			if(tagI.hasKey("bcLastMagic")) playerIn.sendMessage(new TextComponentString(tagI.getString("bcLastMagic")));
 			//does the grimoire have an owner?
 			if(tagI.hasKey("bcGrimoireOwner"))
 			{
@@ -53,7 +56,7 @@ public abstract class GrimoireBaseV2 extends ItemBase
 				if(tagI.getLong("bcGrimoireOwner") == playerIn.getPersistentID().getMostSignificantBits())
 				{
 					//playerIn.openGui(BlackClover.instance, GUI_ID, worldIn, (int)playerIn.posX, (int)playerIn.posY, (int)playerIn.posZ);
-					BlackClover.proxy.openGrimoireGui(GUI_ID, playerIn.getEntityData().getInteger("bcLevel"), magicType);
+					BlackClover.proxy.openGrimoireGui(GUI_ID, playerIn.getEntityData().getInteger("bcLevel"), magicType, playerIn.getHeldItem(handIn));
 					return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 				} 
 				else
@@ -74,7 +77,9 @@ public abstract class GrimoireBaseV2 extends ItemBase
 				//assign this grimoire to the player
 				else 
 				{
+					//I wonder if the unique and persistent id differ
 					tagI.setLong("bcGrimoireOwner", playerIn.getPersistentID().getMostSignificantBits());
+					tagI.setLong("bcGrimoireOwner2", playerIn.getPersistentID().getLeastSignificantBits());
 					tagP.setBoolean("isGrimoireOwner", true);
 					return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 				}
@@ -112,36 +117,26 @@ public abstract class GrimoireBaseV2 extends ItemBase
 		return this.magicType;
 	}
 	
-	//redundant
-	public ArrayList<Spell> getFilledLevelList(int level)
+	@Override
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) 
 	{
-		List<Spell> spells = new ArrayList<Spell>();
-		Iterator<Spell> iterator = Spell.ALL_SPELLS.iterator();
-		while(iterator.hasNext())
+		if(!stack.hasTagCompound())
 		{
-			Spell spell = iterator.next();
-			if(spell.getType() == this.magicType && spell.getRequiredLevel() <= level)
+			tooltip.add("Unowned");
+		}
+		else 
+		{
+			tooltip.add("Owner: " + worldIn.getPlayerEntityByUUID(new UUID(stack.getTagCompound().getLong("bcGrimoireOwner"), stack.getTagCompound().getLong("bcGrimoireOwner2"))).getName());
+			if(!stack.getTagCompound().hasKey("bcLastMagic"))
 			{
-				spells.add(spell);
+				tooltip.add("Selected: None");
+			}
+			else 
+			{
+			tooltip.add("Selected: " + stack.getTagCompound().getString("bcLastMagic"));
 			}
 		}
-		return (ArrayList<Spell>) spells;
-	}
-	
-	//redundant
-	public ArrayList<Spell> getFilledList()
-	{
-		List<Spell> spells = new ArrayList<Spell>();
-		Iterator<Spell> iterator = Spell.ALL_SPELLS.iterator();
-		while(iterator.hasNext())
-		{
-			Spell spell = iterator.next();
-			if(spell.getType() == this.magicType)
-			{
-				spells.add(spell);
-			}
-		}
-		return (ArrayList<Spell>) spells;
+		
 	}
 		
 }

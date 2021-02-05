@@ -1,5 +1,6 @@
 package animecenter.blackclover;
 
+import animecenter.blackclover.commands.CommandSummonGrimoire;
 import animecenter.blackclover.proxy.CommonProxy;
 import animecenter.blackclover.util.Constants;
 import animecenter.blackclover.util.handlers.RegistryHandler;
@@ -10,6 +11,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = Constants.MODID, version = Constants.VERSION, acceptedMinecraftVersions = Constants.MC_VERSION)
 public class BlackClover 
@@ -37,6 +39,12 @@ public class BlackClover
 	public static void postInit(FMLPostInitializationEvent event) 
 	{
 		RegistryHandler.postInit();
+	}
+	
+	@EventHandler
+	public void serverLoad(FMLServerStartingEvent event)
+	{
+		event.registerServerCommand(new CommandSummonGrimoire());
 	}
 	
 

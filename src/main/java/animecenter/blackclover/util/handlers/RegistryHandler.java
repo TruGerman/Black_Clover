@@ -4,6 +4,9 @@ import animecenter.blackclover.BlackClover;
 import animecenter.blackclover.blocks.ModBlocks;
 import animecenter.blackclover.items.ModItems;
 import animecenter.blackclover.magic.MagicOverlayRenderer;
+import animecenter.blackclover.network.GuiButtonPacket;
+import animecenter.blackclover.network.GuiButtonPacket.GuiButtonPacketHandler;
+import animecenter.blackclover.util.Constants;
 import animecenter.blackclover.util.interfaces.IHasModel;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -13,6 +16,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Mod.EventBusSubscriber
 public class RegistryHandler 
@@ -62,6 +67,7 @@ public class RegistryHandler
 	public static void init()
 	{
 		NetworkRegistry.INSTANCE.registerGuiHandler(BlackClover.instance, new GuiHandler());
+		Constants.INSTANCE.registerMessage(GuiButtonPacketHandler.class, GuiButtonPacket.class, 0, Side.SERVER);
 		
 	}
 	

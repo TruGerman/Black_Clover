@@ -6,6 +6,7 @@ import animecenter.blackclover.util.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Mod;
 
@@ -19,14 +20,14 @@ public class ClientProxy extends CommonProxy
 	}
 	
 	@Override
-	public void openGrimoireGui(int id, int level, MagicType type) 
+	public void openGrimoireGui(int id, int level, MagicType type, ItemStack stack) 
 	{
 		switch(id)
 		{
 			case(Constants.GUI_GRIMOIRE_FIRE):
 			{
 				
-				Minecraft.getMinecraft().addScheduledTask(() -> Minecraft.getMinecraft().displayGuiScreen(new GuiGrimoireFire(type, level)));
+				Minecraft.getMinecraft().addScheduledTask(() -> Minecraft.getMinecraft().displayGuiScreen(new GuiGrimoireFire(type, level, stack)));
 			}
 		}
 	}

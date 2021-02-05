@@ -1,6 +1,8 @@
 package animecenter.blackclover.util;
 
 import animecenter.blackclover.creativetabs.GenericTab;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 public final class Constants 
 {
@@ -17,5 +19,7 @@ public static final GenericTab MAIN_TAB = new GenericTab("maintab", null);
 public static final GenericTab GRIMOIRES = new GenericTab("grimoires", null);
 //GUI
 public static final int GUI_GRIMOIRE_FIRE = 1;
+//Networking
+public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel("blackclover");
 
 }
